@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "525325606333",
+    "project_id": "tpone-84a5d",
+    "storage_bucket": "tpone-84a5d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525325606333:android:e655644584763eafce46d4",
+        "android_client_info": {
+          "package_name": "com.example.tp1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBbzz3oBMuw00PQ1ewVAfO9Suu-nO2GrE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
