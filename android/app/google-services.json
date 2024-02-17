@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "525325606333",
-    "project_id": "tpone-84a5d",
-    "storage_bucket": "tpone-84a5d.appspot.com"
+    "project_number": "304430669036",
+    "project_id": "endtpone",
+    "storage_bucket": "endtpone.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:525325606333:android:e655644584763eafce46d4",
+        "mobilesdk_app_id": "1:304430669036:android:be6e112cea3c667b1419c9",
         "android_client_info": {
           "package_name": "com.example.tp1"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCBbzz3oBMuw00PQ1ewVAfO9Suu-nO2GrE"
+          "current_key": "AIzaSyAX8Uh-_V4vc0N42iFDesPuja4CDFT7B2A"
         }
       ],
       "services": {

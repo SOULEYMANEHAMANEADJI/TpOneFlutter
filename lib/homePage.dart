@@ -14,6 +14,7 @@ class _HomePageState extends State<HomePage> {
 
   List<Map<String, String>> notes = [];
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(      
@@ -51,45 +52,52 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('notes').snapshots(),
+        stream: FirebaseFirestore.instance.collection('notes').orderBy("titre", descending: false).snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                var note = snapshot.data!.docs[index];
-                return ListTile(
-                  title: Text(note['titre'] ?? ''),
-                  subtitle: Text(note['contenu'] ?? ''),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.edit,
-                        color: Colors.blue,),
-                        onPressed: () {
-                          editerNote(context, note);
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.delete,
-                        color: Colors.red,),
-                        onPressed: () {
-                          supprimerNote(note['titre'] ?? '');
-                        },
-                      ),
-                    ],
+           if (snapshot.hasData) {
+      if (snapshot.data!.docs.isEmpty) {
+        return Center(
+          child: Text(
+            'Aucune note à afficher.',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+        );
+      } else {
+        return ListView.builder(
+          itemCount: snapshot.data!.docs.length,
+          itemBuilder: (context, index) {
+            var note = snapshot.data!.docs[index];
+            return ListTile(
+              title: Text(note['titre'] ?? ''),
+              subtitle: Text(note['contenu'] ?? ''),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.edit, color: Colors.blue,),
+                    onPressed: () {
+                      editerNote(context, note);
+                    },
                   ),
-                );
-              },
+                  IconButton(
+                    icon: Icon(Icons.delete, color: Colors.red,),
+                    onPressed: () {
+                      supprimerNote(note['titre'] ?? '');
+                    },
+                  ),
+                ],
+              ),
             );
-          } else if (snapshot.hasError) {
-            return Text("Erreur de chargement des notes");
-          } else {
-            return CircularProgressIndicator();
-          }
-        },
-      ),      
+          },
+        );
+      }
+    } else if (snapshot.hasError) {
+      return Text("Erreur de chargement des notes");
+    } else {
+      return CircularProgressIndicator();
+    }
+  },
+),      
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Ajouter())),
         child: Icon(Icons.add),
@@ -97,15 +105,39 @@ class _HomePageState extends State<HomePage> {
     );
   }
   void supprimerNote(String titre) {
-    FirebaseFirestore.instance
-        .collection('notes')
-        .where('titre', isEqualTo: titre)
-        .get()
-        .then((querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        doc.reference.delete();
-      });
-    });
+   showDialog(
+  context: context,
+  builder: (BuildContext context) {
+    return AlertDialog(
+      title: Text('Confirmation'),
+      content: Text('Voulez-vous vraiment supprimer cette note ?'),
+      actions: <Widget>[
+        TextButton(
+          child: Text('Annuler'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        TextButton(
+          child: Text('Supprimer'),
+          onPressed: () {
+            FirebaseFirestore.instance
+                .collection('notes')
+                .where('titre', isEqualTo: titre)
+                .limit(1)
+                .get()
+                .then((querySnapshot) {
+              querySnapshot.docs.forEach((doc) {
+                doc.reference.delete();
+              });
+            });
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+  },
+);
   }
 }
 
